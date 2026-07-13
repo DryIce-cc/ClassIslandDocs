@@ -126,5 +126,5 @@ icon: scale-balanced
 
 ::: right
 HelloWRC
-2025 年 12 月 31 日
+2026 年 7 月 13 日
 :::
