@@ -17,13 +17,13 @@ ClassIsland 内置了一套贡献者标记机制，允许开发者在功能上�
 
 | 功能类型                     | 标记 `[ContributorInfo(..)]` 特性   | `.WithContributorInfo(..)` 链式调用 | 备注                                           |
 |------------------------------|-------------------------------------|-------------------------------------|------------------------------------------------|
-| 行动 Action                  | 标记在 TAction（如有）              | 支持                                |                                                |
+| 行动 Action                  | ✅ 标记在 TAction（如有）            | 支持                                |                                                |
 | 附加设置 AttachedSettings    | ✅ 标记在 TAttachedSettingsControl  | 支持                                |                                                |
 | 认证 Authorize               | ✅ 标记在 TAuthorizeProviderControl | 支持                                |                                                |
 | 组件 Component               | ✅ 标记在 TComponent                | 支持                                |                                                |
 | 提醒 Notification            | ✅ 标记在 TNotificationProvider     | 支持                                |                                                |
 | 档案迁移 ProfileTransfer     | ✅ 标记在 TControl（如有）          | ✅ 支持                             |                                                |
-| 规则集 Rule                  | 见代码 XML 文档注释（仅部分）       | ✅ 支持                             |                                                |
+| 规则集 Rule                  | 见代码 XML 文档注释（仅部分）       | 支持                               |                                                |
 | 设置页面 SettingsPage        | ✅ 标记在 TSettingsPage             | 支持                                |                                                |
 | 语音 Speech                  | ✅ 标记在 TSpeechService            | 支持                                |                                                |
 | 触发器 Trigger               | ✅ 标记在 TTrigger                  | 支持                                |                                                |
