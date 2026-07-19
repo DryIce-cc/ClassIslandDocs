@@ -9,27 +9,30 @@ ClassIsland 内置了一套贡献者标记机制，允许开发者在功能上�
 
 标注 ContributorInfo 一般两种方式：
 - **推荐在类上标记 `[ContributorInfo]` 特性**
-- 在不便使用特性的场合，则使用 **`service.AddXXX(...).WithContributorInfo(ContributorInfo);` 的链式调用方法**。
-
-- 下面按功能类型逐一说明。
+- 在不便使用特性的场合，则使用 **`service.AddXXX(..).WithContributorInfo(..)` 的链式调用方法**。
 
 ### 各功能的标注方式对照
 
-| 功能类型                     | 标记 `[ContributorInfo(..)]` 特性   | `.WithContributorInfo(..)` 链式调用 | 备注                                           |
-|------------------------------|-------------------------------------|-------------------------------------|------------------------------------------------|
-| 行动 Action                  | ✅ 标记在 TAction（如有）            | 支持                                |                                                |
-| 附加设置 AttachedSettings    | ✅ 标记在 TAttachedSettingsControl  | 支持                                |                                                |
-| 认证 Authorize               | ✅ 标记在 TAuthorizeProviderControl | 支持                                |                                                |
-| 组件 Component               | ✅ 标记在 TComponent                | 支持                                |                                                |
-| 提醒 Notification            | ✅ 标记在 TNotificationProvider     | 支持                                |                                                |
-| 档案迁移 ProfileTransfer     | ✅ 标记在 TControl（如有）          | ✅ 支持                             |                                                |
-| 规则集 Rule                  | 见代码 XML 文档注释（仅部分）       | 支持                               |                                                |
-| 设置页面 SettingsPage        | ✅ 标记在 TSettingsPage             | 支持                                |                                                |
-| 语音 Speech                  | ✅ 标记在 TSpeechService            | 支持                                |                                                |
-| 触发器 Trigger               | ✅ 标记在 TTrigger                  | 支持                                |                                                |
-| 教程 Tutorial                | ❌                                  | ✅ 支持                             | ✅ 也可在教程 JSON 中加入 ContributorInfo 属性 |
-| 天气图标 WeatherIconTemplate | ❌                                  | ✅ 支持                             |                                                |
-| XAML 主题 XamlTheme          | ❌                                  | ❌                                  | XAML 主题不支持 ContributorInfo 信息           |
+| 功能类型                  | 标记 `[ContributorInfo(..)]` 特性 | ClassIsland 适配情况 |
+|---------------------------|-----------------------------------|----------------------|
+| 行动　　 Action           | ✅ 标记在 TAction                 | ✅ 已适配            |
+| 附加设置 AttachedSettings | ✅ 标记在 TControl                | ❌ 未显示            |
+| 认证　　 Authorize        | ✅ 标记在 TControl                | ✅ 已适配            |
+| 组件　　 Component        | ✅ 标记在 TComponent              | ✅ 已适配            |
+| 提醒　　 Notification     | ✅ 标记在 TProvider               | ✅ 已适配            |
+| 档案迁移 ProfileTransfer  | ⭕️ 部分支持，标记在 TControl      | ❌ 未显示            |
+| 规则集　 Rule             | ⭕️ 部分支持，见代码 XML 注释      | ✅ 已适配            |
+| 设置页面 SettingsPage     | ✅ 标记在 TSettingsPage           | ✅ 已适配            |
+| 语音　　 Speech           | ✅ 标记在 ISpeechService          | ✅ 已适配            |
+| 触发器　 Trigger          | ✅ 标记在 TTrigger                | ✅ 已适配            |
+| 教程　　 Tutorial         | ❌ 不可用                         | ❌ 未显示            |
+| 天气图标 WeatherIcon      | ❌ 不可用                         | ✅ 已适配            |
+
+- **主界面 XAML 主题**：不支持贡献者信息。主题的作者和名称信息直接在 `ThemeManifest` 中声明。
+- **应用内教程 Tutorial**：支持在教程 JSON 中添加 ContributorInfo 字段标注贡献者信息。或使用链式调用方法。
+
+各功能具体标记方式，详见代码 XML 文档注释。  
+所有功能均支持以 `service.AddXXX(..).WithContributorInfo(..)` 链式调用方法添加 ContributorInfo 信息。
 
 ### 通过特性标注（推荐）
 
@@ -53,8 +56,8 @@ public class WeatherSettingsPage : SettingsPageBase {
 
 ### 通过链式方法标注（备选）
 
-`WithContributorInfo` 是一个通用补充机制，可在链式调用中为注册项附加贡献者信息。
-它适用于那些没有具体类可以标注特性的功能，例如规则集、天气图标模板等。
+`WithContributorInfo` 是一个通用补充机制，可在链式调用中为注册项附加贡献者信息。所有功能均支持此方法。
+它尤其适用于那些没有具体类可以标注特性的功能，例如规则集、天气图标模板等。
 
 ```csharp
 services.AddRule(..)
@@ -71,12 +74,7 @@ services.AddTutorialGroupByUri(new Uri("avares://..."))
 
 **对本身已标注特性的类型使用 `WithContributorInfo`**
 
-在已经标注了 `[ContributorInfo]` 的类型上链式调用 `WithContributorInfo` 是可以的，默认会覆盖特性中声明的 `Details`。
-
-### 不支持 `ContributorInfo` 的功能
-
-**XAML 主题** (`AddXamlTheme`) 目前不支持贡献者归属机制。
-主题的作者和名称信息直接在 `ThemeManifest` 中声明。
+在已经标注了 `[ContributorInfo]` 的类型上链式调用 `WithContributorInfo` 是合法的，默认会覆盖特性中声明的 `Details`。
 
 ## 贡献者 ID 与别名
 
@@ -120,7 +118,7 @@ xmlns:ci="http://classisland.tech/schemas/xaml/core"
 
 | 语法 | 效果 |
 |---|---|
-| `\\` | **换行**。前后不要加空格。 |
+| `\\` | **换行**，可以代替`\n`。前后不要加空格 |
 | `@关键词` | 从 `ContributorAliases` 映射表中查找并**加粗显示**，未找到时加粗显示原文 |
 | `**文字**` | **加粗** |
 | `[显示文本](链接)` | 超链接，点击通过 `classisland://` URI 导航打开 |
@@ -129,7 +127,7 @@ xmlns:ci="http://classisland.tech/schemas/xaml/core"
 因此在编写 `Details` 时：
 
 - `@bro 功能A\\@ouo 功能B` — `\\` 分隔会产生换行，共两行。
-- 使用原始字符串字面量时，代码中的**真实换行**也会被渲染为弹窗中的换行，因为 `SimpleRichText` 会将 `\\` 替换为 `\n` 后再按真实换行拆分。但建议**统一使用 `\\` 表示换行**，风格更一致。
+- 使用原始字符串字面量时，代码中的**真实换行**也会被渲染为弹窗中的换行，因为 `SimpleRichText` 会将 `\\` 替换为 `\n` 后再按真实换行拆分。建议**统一使用 `\\` 表示换行**，风格更一致。
 
 ## 插件支持信息 `PluginMessage`
 
